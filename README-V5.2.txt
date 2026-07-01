@@ -1,0 +1,1 @@
+禾渼智慧管理中心 V5.2\n覆蓋專案檔案後，依 apps-script/CodeGS-v52-addOrder-patch.txt 修改 Apps Script、儲存並重新部署。\n
