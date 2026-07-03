@@ -60,9 +60,20 @@ function filterOrders(status) {
   renderOrders();
 }
 
+
+function orderSortValue(o, fallbackIndex) {
+  const created = o["建立時間"] || o["建立日期"] || "";
+  const createdTime = Date.parse(String(created).replaceAll("/", "-"));
+  if (!Number.isNaN(createdTime)) return createdTime;
+  const id = String(o["訂單編號"] || "");
+  const digits = id.replace(/\D/g, "");
+  if (digits) return Number(digits);
+  return fallbackIndex || 0;
+}
+
 function renderOrders() {
   orderList.innerHTML = "";
-  let list = orders;
+  let list = orders.map(function(o, idx){ o.__idx = idx; return o; }).sort(function(a, b) { return orderSortValue(b, b.__idx) - orderSortValue(a, a.__idx); });
 
   if (currentFilter !== "全部") {
     list = orders.filter(function (o) {
