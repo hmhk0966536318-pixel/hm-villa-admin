@@ -8,6 +8,7 @@
     </div>
     <button class="sheet-close" onclick="closeAllSheets()">×</button>
   </div>
+
   <form id="editOrderForm" onsubmit="submitEditOrder(event)">
     <div class="form-section">
       <div class="form-section-title">👤 訂房人資料</div>
@@ -16,13 +17,19 @@
         <label>電話<input name="phone" inputmode="tel"/></label>
         <label>來源
           <select name="source">
-            <option value="LINE">LINE</option><option value="Facebook">Facebook</option><option value="Threads">Threads</option>
-            <option value="電話">電話</option><option value="官網">官網</option><option value="Booking">Booking</option>
-            <option value="Agoda">Agoda</option><option value="其他">其他</option>
+            <option value="LINE">LINE</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Threads">Threads</option>
+            <option value="電話">電話</option>
+            <option value="官網">官網</option>
+            <option value="Booking">Booking</option>
+            <option value="Agoda">Agoda</option>
+            <option value="其他">其他</option>
           </select>
         </label>
       </div>
     </div>
+
     <div class="form-section">
       <div class="form-section-title">📅 入住資訊</div>
       <div class="form-grid">
@@ -42,6 +49,7 @@
         <label>小孩<input name="child" type="number" min="0"/></label>
       </div>
     </div>
+
     <div class="form-section">
       <div class="form-section-title">💰 金額資訊</div>
       <div class="form-grid">
@@ -51,6 +59,7 @@
         <label>後五碼<input name="last5" maxlength="5"/></label>
       </div>
     </div>
+
     <div class="form-section">
       <div class="form-section-title">📌 訂單狀態</div>
       <div class="status-options">
@@ -62,10 +71,14 @@
         <label class="status-option"><input type="radio" name="status" value="已取消"/><span>❌ 已取消</span></label>
       </div>
     </div>
+
     <div class="form-section">
       <div class="form-section-title">📝 備註</div>
-      <div class="form-grid"><label class="full-label">備註<textarea name="note" rows="4"></textarea></label></div>
+      <div class="form-grid">
+        <label class="full-label">備註<textarea name="note" rows="4"></textarea></label>
+      </div>
     </div>
+
     <button id="editOrderBtn" class="primary-btn full-btn" type="submit">💾 儲存修改</button>
   </form>
 </section>
