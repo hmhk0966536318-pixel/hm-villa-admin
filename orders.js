@@ -1,6 +1,3 @@
-if (!window.CSS) window.CSS = {};
-if (!CSS.escape) CSS.escape = function(v){ return String(v).replace(/"/g, '\\"'); };
-
 const ORDERS_API_URL = "https://script.google.com/macros/s/AKfycbxnJGz1RIZwYytZjK3fT6LfrD9TBebPufTojHOvFPT6nf1hwgvbvjY8_uR6U67FiTgZ/exec";
 let orders = [];
 let currentFilter = "全部";
@@ -63,9 +60,19 @@ function filterOrders(status) {
   renderOrders();
 }
 
+
+function orderSortValue(o) {
+  const created = o["建立時間"] || o["建立日期"] || "";
+  const createdTime = Date.parse(String(created).replaceAll("/", "-"));
+  if (!Number.isNaN(createdTime)) return createdTime;
+  const id = String(o["訂單編號"] || "");
+  const digits = id.replace(/\D/g, "");
+  return digits ? Number(digits) : 0;
+}
+
 function renderOrders() {
   orderList.innerHTML = "";
-  let list = orders;
+  let list = [...orders].sort(function(a, b) { return orderSortValue(b) - orderSortValue(a); });
 
   if (currentFilter !== "全部") {
     list = orders.filter(function (o) {
