@@ -61,18 +61,19 @@ function filterOrders(status) {
 }
 
 
-function orderSortValue(o) {
+function orderSortValue(o, fallbackIndex) {
   const created = o["建立時間"] || o["建立日期"] || "";
   const createdTime = Date.parse(String(created).replaceAll("/", "-"));
   if (!Number.isNaN(createdTime)) return createdTime;
   const id = String(o["訂單編號"] || "");
   const digits = id.replace(/\D/g, "");
-  return digits ? Number(digits) : 0;
+  if (digits) return Number(digits);
+  return fallbackIndex || 0;
 }
 
 function renderOrders() {
   orderList.innerHTML = "";
-  let list = [...orders].sort(function(a, b) { return orderSortValue(b) - orderSortValue(a); });
+  let list = orders.map(function(o, idx){ o.__idx = idx; return o; }).sort(function(a, b) { return orderSortValue(b, b.__idx) - orderSortValue(a, a.__idx); });
 
   if (currentFilter !== "全部") {
     list = orders.filter(function (o) {
@@ -189,9 +190,7 @@ function openEditOrderSheet(orderId) {
   editOrderForm.depositDue.value = cleanNumber(o["應收訂金"]);
   editOrderForm.depositPaid.value = cleanNumber(o["已收訂金"]);
   editOrderForm.last5.value = o["後五碼"] || "";
-  const editStatus = o["狀態"] || "待收訂";
-  const statusInput = editOrderForm.querySelector('input[name="status"][value="' + editStatus + '"]');
-  if (statusInput) statusInput.checked = true;
+  editOrderForm.status.value = o["狀態"] || "待收訂";
   editOrderForm.source.value = o["來源"] || "LINE";
   editOrderForm.note.value = o["備註"] || "";
 
@@ -275,7 +274,6 @@ function cancelOrder(orderId) {
 
 function openAddOrderSheet() {
   addOrderForm.reset();
-  addOrderForm.roomType.value = "包棟";
   updateSmartInfo();
   showOverlayAndSheet("addOrderSheet");
 }
